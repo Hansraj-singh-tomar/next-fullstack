@@ -144,7 +144,7 @@ const SignUpForm = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <Input {...field} name="email" placeholder="email" />
-                  <p className='text-muted text-gray-700 text-sm'>We will send you a verification code</p>
+                  <p className='text-muted text-gray-800 text-sm'>We will send you a verification code</p>
                   <FormMessage />
                 </FormItem>
               )}

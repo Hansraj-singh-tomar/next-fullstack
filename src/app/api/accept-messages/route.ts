@@ -1,23 +1,26 @@
-import {getServerSession} from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]/options";
 import UserModel from "@/model/user";
 import dbConnect from "@/lib/dbConnect";
-import { User } from "next-auth";
+
+// import { User } from "next-auth";
+// import { auth } from "@/auth"
 
 export async function POST(req: Request) { 
     await dbConnect(); // connect to the database
 
     //! checking if the user is logged in or not
     const session = await getServerSession(authOptions); 
+    // const session = await auth();
     // console.log(session); // this will give us the user
     
-    const user:User = session?.user;
+    const user = session?.user;
     
-    if (!session || !user) {
+    if (!session || !session.user) {
         return Response.json({success: false, message: "User not logged in, Not authenticated"}, {status: 401});
     }
 
-    const userId = user._id; // this _id is a string type value, bcz we change it into an string in options.ts file 
+    const userId = user?._id; // this _id is a string type value, bcz we change it into an string in options.ts file 
     const { acceptMessages } = await req.json(); //! it just a flag - true/false
 
     try { 
@@ -44,7 +47,7 @@ export async function POST(req: Request) {
     }
 }
 
-export async function GET(req: Request) {
+export async function GET() {
   // Connect to the database
   await dbConnect();
 

@@ -1,16 +1,21 @@
 import {getServerSession} from "next-auth/next";
-import {authOptions} from "../auth/[...nextauth]/route";
+import { authOptions } from "../auth/[...nextauth]/options";
 import UserModel from "@/model/user";
 import dbConnect from "@/lib/dbConnect";
-import {User} from "next-auth";
+// import {User} from "next-auth";
 import mongoose from "mongoose";
 
-export async function GET(req: Request) { 
+export async function GET() { 
     await dbConnect();
 
     const session = await getServerSession(authOptions);
-    const _user:User = session?.user;
+    
+    // console.log("let she what we are getting in the session", session); // {user: {name: undefined, email: "tomar...", image: undefined, id: ..., isVerified: true, unsername: two, isAcceptingMessages: true}}
 
+    const _user = session?.user;
+
+
+    
     if (!session || !_user) {
         return Response.json({success: false, message: "Not authenticated"}, {status: 401});
     }
@@ -26,11 +31,13 @@ export async function GET(req: Request) {
             { $group: { _id: '$_id', messages: { $push: '$messages' } } },
         ]).exec();
 
+        // console.log("user data - ", user); // {id: ...., messages:[[object]]}
+        
         if(!user || user.length === 0) {
             return Response.json({success: false, message: "User not found"}, {status: 404});
         }
 
-        return Response.json({success: true, data: user[0].messages}, {status: 200});
+        return Response.json({success: true, messages: user[0].messages}, {status: 200});
     } catch (error) {
         console.log("Error getting messages", error);
         

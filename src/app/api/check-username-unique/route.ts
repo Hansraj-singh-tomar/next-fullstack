@@ -10,9 +10,9 @@ const UsernameQuerySchema = z.object({
 // URl: http://localhost:3000/api/check-username-unique?username=abcde
 
 export async function GET(request: Request) { 
-    //TODO - Use this in all other routes
-    //? this is a get request and some one has used post for that we are adding some checks here
-    //? But it has depricated from the nextjs
+
+    //! It has depricated from the nextjs
+    //? this is a get request but some one has used post for that, for that we are adding some checks here
     // if (request.method !== "GET") {
     //     return Response.json({success: false, message: "Method not allowed, only GET method is allowed"}, {status: 405});
     // }
@@ -25,7 +25,7 @@ export async function GET(request: Request) {
         
         //! validate with zod
         const result = UsernameQuerySchema.safeParse({username: queryParams}); // we have to pass the whole object like this otherwise it will not work
-        // console.log(result); //! { success: true, data: { username: 'one' } }
+        console.log(result); //! { success: true, data: { username: 'one' } }
         
         if (!result.success) {
             const usernameErrors = result.error.format()?.username?._errors || [];

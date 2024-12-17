@@ -12,6 +12,7 @@ export async function POST(request: Request) {
         
         // url se jab chije aati hai to hame chijo ko decode kar lena chahiye
         const decodedUsername = decodeURIComponent(username); // username = "one%20two%20three"
+
         const user = await UserModel.findOne({ username: decodedUsername });
 
         if (!user) {
@@ -51,7 +52,6 @@ export async function POST(request: Request) {
             { status: 400 }
           );
         }
-
     } catch (error) {
         console.log("Error verifying user", error);
         return Response.json({success: false, message: "Error verifying user"}, {status: 500});        
