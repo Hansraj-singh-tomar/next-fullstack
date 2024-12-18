@@ -31,8 +31,8 @@ const parseStringMessages = (messageString: string): string[] => {
   return messageString.split(specialChar);
 };
 
-// const initialMessageString =
-//   "What's your favorite movie?||Do you have any pets?||What's your dream job?";
+const initialMessageString =
+  "What's your favorite movie?||Do you have any pets?||What's your dream job?";
 
 export default function SendMessage() {
   const params = useParams<{ username: string }>();
@@ -45,10 +45,10 @@ export default function SendMessage() {
     error,
   } = useCompletion({
     api: '/api/suggest-messages',
-    // initialCompletion: initialMessageString,
+    initialCompletion: initialMessageString,
   });
 
-  console.log("what we are getting in completion", completion);
+  // console.log("what we are getting in completion", completion);
   
 
   const form = useForm<z.infer<typeof messageSchema>>({
